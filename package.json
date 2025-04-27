@@ -1,12 +1,15 @@
 {
-  "name": "r3f-vite-starter",
+  "homepage": "http://amanpunetha08.github.io/wedding-website",
+  "name": "wedding-website",
   "private": true,
   "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "predeploy": "yarn build",
+    "deploy": "gh-pages -d dist"
   },
   "dependencies": {
     "@react-three/drei": "^9.108.1",
@@ -28,6 +31,7 @@
     "@types/react": "^18.0.27",
     "@types/react-dom": "^18.0.10",
     "@vitejs/plugin-react": "^3.1.0",
-    "vite": "^6.2.6"
+    "gh-pages": "^6.3.0",
+    "vite": "^4.5.13"
   }
 }
