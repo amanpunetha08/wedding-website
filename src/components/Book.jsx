@@ -274,7 +274,7 @@ export const Book = ({ ...props }) => {
   // Adjust camera position based on viewport size
   useEffect(() => {
     if (viewport.width < 600) {
-      camera.position.set(0, 0, 4); // Move camera slightly back for mobile
+      camera.position.set(1, 1, 3.5); // Move camera slightly back for mobile
     } else {
       camera.position.set(0, 0, 3); // Normal position for larger screens
     }

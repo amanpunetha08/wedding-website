@@ -2,22 +2,20 @@ import { atom, useAtom } from "jotai";
 import { useEffect, useState } from "react";
 
 const pictures = [
-  "DSC00680",
+  "DSC01420",
+  "DSC00993",
   "DSC00933",
   "DSC00966",
-  "DSC01489",
-  "DSC02031",
-  "DSC02064",
-  "DSC02069",
-  "DSC00983",
   "DSC01011",
   "DSC01040",
-  "DSC01064",
-  "DSC01071",
+  "DSC00680",
+  "DSC01489",
+  "DSC02031",
   "DSC01103",
-  "DSC01145",
-  "DSC01420",
-  "DSC01461",
+  "DSC02064",
+  "DSC02069",
+  "DSC01071",
+  "DSC01064",
 ];
 
 export const pageAtom = atom(0);
@@ -132,24 +130,22 @@ export const UI = () => {
           </div>
         )}
 
-        {/* Page navigation (hidden on small screens) */}
-        <div className="hidden sm:flex w-full overflow-auto pointer-events-auto justify-center">
-          <div className="overflow-auto flex flex-wrap justify-center items-center gap-3 sm:gap-4 max-w-full px-4 sm:p-10">
-            {[...pages].map((_, index) => (
-              <button
-                key={index}
-                className={`border-transparent hover:border-white transition-all duration-300 px-3 py-2 sm:px-4 sm:py-3 rounded-full text-sm sm:text-lg uppercase shrink-0 border ${
-                  index === page
-                    ? "bg-white/90 text-black"
-                    : "bg-black/30 text-white"
-                }`}
-                onClick={() => setPage(index)}
-              >
-                {index === 0 ? "Cover" : `Page ${index}`}
-              </button>
-            ))}
+        {/* Page navigation */}
+        <div className="flex w-full overflow-auto pointer-events-auto justify-center px-4 sm:px-10 py-4">
+          <div className="flex flex-wrap justify-center gap-3 sm:gap-4 max-w-full">
+            {/* Show Cover and Back Cover for mobile only */}
             <button
-              className={`border-transparent hover:border-white transition-all duration-300 px-3 py-2 sm:px-4 sm:py-3 rounded-full text-sm sm:text-lg uppercase shrink-0 border ${
+              key={0}
+              className={`sm:hidden border-transparent hover:border-white transition-all duration-300 px-3 py-2 sm:px-4 sm:py-3 rounded-full text-sm sm:text-lg uppercase shrink-0 border ${
+                page === 0 ? "bg-white/90 text-black" : "bg-black/30 text-white"
+              }`}
+              onClick={() => setPage(0)}
+            >
+              Cover
+            </button>
+            <button
+              key={pages.length}
+              className={`sm:hidden border-transparent hover:border-white transition-all duration-300 px-3 py-2 sm:px-4 sm:py-3 rounded-full text-sm sm:text-lg uppercase shrink-0 border ${
                 page === pages.length
                   ? "bg-white/90 text-black"
                   : "bg-black/30 text-white"
@@ -158,6 +154,27 @@ export const UI = () => {
             >
               Back Cover
             </button>
+
+            {/* Show all pages for desktop */}
+            <div className="hidden sm:flex w-full overflow-auto pointer-events-auto justify-center">
+              {[...pages].map((_, index) => (
+                <button
+                  key={index}
+                  className={`border-transparent hover:border-white transition-all duration-300 px-3 py-2 sm:px-4 sm:py-3 rounded-full text-sm sm:text-lg uppercase shrink-0 border ${
+                    index === page
+                      ? "bg-white/90 text-black"
+                      : "bg-black/30 text-white"
+                  }`}
+                  onClick={() => setPage(index)}
+                >
+                  {index === 0
+                    ? "Cover"
+                    : index === pages.length - 1
+                    ? "Back Cover"
+                    : `Page ${index}`}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
       </main>
@@ -216,7 +233,7 @@ export const UI = () => {
       {/* Hidden Audio element */}
       {audioPlaying && (
         <audio
-          src="/audios/background-music.mp3"
+          src="/wedding-website/audios/background-music.mp3"
           autoPlay
           loop
           muted={false}

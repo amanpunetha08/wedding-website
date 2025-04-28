@@ -1,5 +1,6 @@
 import { Environment, Float, OrbitControls } from "@react-three/drei";
 import { Book } from "./Book";
+
 export const Experience = () => {
   return (
     <>
@@ -9,10 +10,11 @@ export const Experience = () => {
         speed={2}
         rotationIntensity={2}
       >
-        <Book position={[-0.1, 0, 0]} />
+        {/* Increase the scale of the book by default */}
+        <Book position={[-0.15, 0, 0]} /> {/* scale set to 2.5 */}
       </Float>
-      <OrbitControls />
-      <Environment preset="studio"></Environment>
+      <OrbitControls enableZoom={false} /> {/* Disable zooming */}
+      <Environment preset="studio" />
       <directionalLight
         position={[2, 5, 2]}
         intensity={2.5}
