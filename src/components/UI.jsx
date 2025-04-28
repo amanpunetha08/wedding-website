@@ -1,6 +1,7 @@
 import { atom, useAtom } from "jotai";
 import { useEffect, useState } from "react";
 
+// Photos array
 const pictures = [
   "DSC01420",
   "DSC00993",
@@ -18,14 +19,21 @@ const pictures = [
   "DSC01064",
 ];
 
+// Build the pages
 export const pageAtom = atom(0);
-export const pages = [{ front: "book-cover", back: pictures[0] }];
+export const pages = [
+  {
+    front: "book-cover",
+    back: pictures[0],
+  },
+];
 for (let i = 1; i < pictures.length - 1; i += 2) {
   pages.push({
     front: pictures[i % pictures.length],
     back: pictures[(i + 1) % pictures.length],
   });
 }
+
 pages.push({
   front: pictures[pictures.length - 1],
   back: "book-back",
@@ -39,35 +47,32 @@ export const UI = () => {
     new Audio("/wedding-website/audios/background-music.mp3")
   );
 
-  // Handle page flip sound effect
+  // Page flip sound
   useEffect(() => {
     const flipAudio = new Audio("/wedding-website/audios/page-flip-01a.mp3");
     flipAudio.play();
   }, [page]);
 
-  // Ensure audio plays on page load and refresh
+  // Background music
   useEffect(() => {
     const isAudioPlayedBefore = localStorage.getItem("audioPlayed");
 
-    // Set up the audio to loop, muted initially for autoplay
     audio.loop = true;
-    audio.muted = true; // Start muted to allow autoplay
+    audio.muted = true;
     audio.play().catch((error) => {
       console.error("Audio playback failed:", error);
     });
 
-    // Unmute once the user interacts with the page
     const unmuteAudio = () => {
       if (!audioPlaying) {
         audio.muted = false;
         setAudioPlaying(true);
-        localStorage.setItem("audioPlayed", "true"); // Mark audio as played
+        localStorage.setItem("audioPlayed", "true");
         window.removeEventListener("click", unmuteAudio);
         window.removeEventListener("scroll", unmuteAudio);
       }
     };
 
-    // Attach event listeners for user interaction
     window.addEventListener("click", unmuteAudio);
     window.addEventListener("scroll", unmuteAudio);
 
@@ -90,7 +95,7 @@ export const UI = () => {
             />
           </a>
 
-          {/* Desktop Navigation */}
+          {/* Desktop Nav */}
           <nav className="hidden sm:flex justify-center gap-10 text-[#f5f5f5] text-lg font-serif tracking-wide">
             {["Home", "About", "Functions", "Contact"].map((item) => (
               <a
@@ -130,22 +135,24 @@ export const UI = () => {
           </div>
         )}
 
-        {/* Page navigation */}
-        <div className="flex w-full overflow-auto pointer-events-auto justify-center px-4 sm:px-10 py-4">
-          <div className="flex flex-wrap justify-center gap-3 sm:gap-4 max-w-full">
-            {/* Show Cover and Back Cover for mobile only */}
+        {/* Page Navigation */}
+        <div className="w-full overflow-auto pointer-events-auto flex justify-center">
+          <div className="overflow-auto flex items-center gap-4 max-w-full p-10">
+            {[...pages].map((_, index) => (
+              <button
+                key={index}
+                className={`border-transparent hover:border-white transition-all duration-300  px-4 py-3 rounded-full  text-lg uppercase shrink-0 border ${
+                  index === page
+                    ? "bg-white/90 text-black"
+                    : "bg-black/30 text-white"
+                }`}
+                onClick={() => setPage(index)}
+              >
+                {index === 0 ? "Cover" : `Page ${index}`}
+              </button>
+            ))}
             <button
-              key={0}
-              className={`sm:hidden border-transparent hover:border-white transition-all duration-300 px-3 py-2 sm:px-4 sm:py-3 rounded-full text-sm sm:text-lg uppercase shrink-0 border ${
-                page === 0 ? "bg-white/90 text-black" : "bg-black/30 text-white"
-              }`}
-              onClick={() => setPage(0)}
-            >
-              Cover
-            </button>
-            <button
-              key={pages.length}
-              className={`sm:hidden border-transparent hover:border-white transition-all duration-300 px-3 py-2 sm:px-4 sm:py-3 rounded-full text-sm sm:text-lg uppercase shrink-0 border ${
+              className={`border-transparent hover:border-white transition-all duration-300  px-4 py-3 rounded-full  text-lg uppercase shrink-0 border ${
                 page === pages.length
                   ? "bg-white/90 text-black"
                   : "bg-black/30 text-white"
@@ -154,36 +161,15 @@ export const UI = () => {
             >
               Back Cover
             </button>
-
-            {/* Show all pages for desktop */}
-            <div className="hidden sm:flex w-full overflow-auto pointer-events-auto justify-center">
-              {[...pages].map((_, index) => (
-                <button
-                  key={index}
-                  className={`border-transparent hover:border-white transition-all duration-300 px-3 py-2 sm:px-4 sm:py-3 rounded-full text-sm sm:text-lg uppercase shrink-0 border ${
-                    index === page
-                      ? "bg-white/90 text-black"
-                      : "bg-black/30 text-white"
-                  }`}
-                  onClick={() => setPage(index)}
-                >
-                  {index === 0
-                    ? "Cover"
-                    : index === pages.length - 1
-                    ? "Back Cover"
-                    : `Page ${index}`}
-                </button>
-              ))}
-            </div>
           </div>
         </div>
       </main>
 
-      {/* Marquee text */}
+      {/* Marquee Text */}
       <div className="fixed inset-0 overflow-hidden select-none flex items-center -rotate-2">
         <div className="w-full whitespace-nowrap">
           <div className="flex animate-marquee w-[200%]">
-            {/* First instance */}
+            {/* First Instance */}
             <div className="flex items-center gap-6 sm:gap-8 w-full sm:w-1/2 justify-center">
               <h1
                 className="text-white text-4xl sm:text-5xl md:text-8xl lg:text-10xl font-bold"
@@ -205,7 +191,7 @@ export const UI = () => {
               </h2>
             </div>
 
-            {/* Second instance */}
+            {/* Second Instance */}
             <div className="flex items-center gap-6 sm:gap-8 w-full sm:w-1/2 justify-center">
               <h1
                 className="text-white text-4xl sm:text-5xl md:text-8xl lg:text-10xl font-bold"
@@ -230,7 +216,7 @@ export const UI = () => {
         </div>
       </div>
 
-      {/* Hidden Audio element */}
+      {/* Hidden Audio */}
       {audioPlaying && (
         <audio
           src="/wedding-website/audios/background-music.mp3"
@@ -238,7 +224,7 @@ export const UI = () => {
           loop
           muted={false}
           className="hidden"
-        ></audio>
+        />
       )}
     </>
   );
